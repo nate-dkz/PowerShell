@@ -1,7 +1,7 @@
 Function New-PSPassword {
     [CmdletBinding()]
     Param (
-        [int] $length = 15
+        [int]$length = 15
     )
 
     BEGIN {}
