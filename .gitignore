@@ -1,8 +1,5 @@
 # Ignore all files folders
-_Archive
-Local
-Test
-
+_Archive/
 
 # Ignore all file extension types
 *.txt
