@@ -1,6 +1,8 @@
 # Ignore all files folders
-PS_Local/
-PS_Test/
+_Archive
+Local
+Test
+
 
 # Ignore all file extension types
 *.txt
