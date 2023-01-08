@@ -1,66 +1,79 @@
 # Returns domain information
 Get-ADDomain
 
-# Returns the hostname and operating systems of all domain controllers
+# Displays the hostname and operating systems of all domain controllers
 Get-ADDomainController -Filter * | Select-Object Hostname, OperatingSystem
 
-# Returns the fine grained password policy
+# Displays the fine grained password policy
 Get-ADFineGrainedPasswordPolicy -Filter *
 
-# Returns the default password policy for the domain
+# Displays the default password policy for the domain
 Get-ADDefaultDomainPasswordPolicy
 
-# Returns a user account and lists all properties
-Get-ADUser 'n.darker' -Properties *
+# Displays a user account and all properties
+$User = 'john.appleseed'
+Get-ADUser $User -Properties *
 
-# Returns a user account and lists specific properties
-Get-ADUser 'n.darker' -Properties * | Select-Object -Property GivenName, Surname, EmailAddress, LastLogonDate
+# Displays a user account with specific properties
+$User = 'john.appleseed'
+Get-ADUser $User -Properties * | Select-Object -Property GivenName, Surname, EmailAddress, LastLogonDate
 
-# Returns all user accounts within a specific OU
-Get-ADUser -SearchBase 'OU=IT,OU=Arkham,DC=arkham,DC=co,DC=uk' -Filter *
+# Displays all user accounts within a specific OU
+$OU = 'OU=Test,OU=Arkham,DC=arkham,DC=co,DC=uk'
+Get-ADUser -SearchBase $OU -Filter *
 
-# Returns all user accounts which are disabled
+# Displays all user accounts which are disabled
 Search-ADAccount -AccountDisabled
 
 # Disables a user account
-Disable-ADAccount -Identity 'Carl.Young' -PassThru
+$User = 'john.appleseed'
+Disable-ADAccount -Identity $User -PassThru
 
 # Enables a user account
-Enable-ADAccount -Identity 'Carl.Young' -PassThru
+$User = 'john.appleseed'
+Enable-ADAccount -Identity $User -PassThru
 
-# Returns all user accounts which are locked
+# Displays all user accounts which are locked
 Search-ADAccount -LockedOut
 
 # Unlocks a user account
-Unlock-ADAccount -Identity 'Carl.Young'
+$User = 'john.appleseed'
+Unlock-ADAccount -Identity $User
 
-Set-ADUser -Identity 'Carl.Young' -ChangePasswordAtLogon $true
+# Requests the user to change password at the next logon
+$User = 'john.appleseed'
+Set-ADUser -Identity $User -ChangePasswordAtLogon $true
 
-# Returns all user accounts where passwords are set to never expire
-Get-ADUser -Filter * -Properties Name, PasswordNeverExpires |                                                                                                                                      Where-Object {$_.PasswordNeverExpires -eq $true} |
+# Displays all user accounts where passwords are set to never expire
+Get-ADUser -Filter * -Properties Name, PasswordNeverExpires |
+Where-Object { $_.PasswordNeverExpires -eq $true } |
 Select-Object -Property DistinguishedName, Name, Enabled
 
-# Returns all user accounts within a specific OU and for each object, sets the email address
-Get-ADUser -Filter * -SearchBase 'OU=IT,OU=Business Units,DC=arkham,DC=co,DC=uk' | 
+# Sets the email address for each user in a specific OU
+$OU = 'OU=Test,OU=Arkham,DC=arkham,DC=co,DC=uk'
+Get-ADUser -Filter * -SearchBase $OU | 
 ForEach-Object { Set-ADUser -Identity $_ -EmailAddress "$($_.GivenName).$($_.Surname)@arkham.live" }
 
-# Moves a user account to a new OU
-Move-ADObject -Identity 'CN=Carl Young,OU=Service Desk,OU=IT,OU=Arkham,DC=arkham,DC=co,DC=uk' -TargetPath 'OU=Security,OU=IT,OU=Arkham,DC=arkham,DC=co,DC=uk'
+# Moves a user account to a different OU
+$User = 'John Appleseed'
+$OU1= "CN=$User,OU=Test,OU=Arkham,DC=arkham,DC=co,DC=uk"
+$OU2 = 'OU=Test 2,OU=Arkham,DC=arkham,DC=co,DC=uk'
+Move-ADObject -Identity $OU1 -TargetPath $OU2 -PassThru
 
-# Returns global security groups
+# Displays global security groups
 Get-ADGroup -Filter * | Where-Object {$_.GroupScope -eq 'Global' -and $_.GroupCategory -eq 'Security'}
 
-# Returns user accounts belonging to a specific group
-Get-ADGroupMember -Identity 'Security' | Select-Object -Property Name, SamAccountName
+# Displays user accounts belonging to a specific group
+$Group = 'Security'
+Get-ADGroupMember -Identity $Group | Select-Object -Property Name, SamAccountName
 
-# Adds user accounts to a group
-Add-ADGroupMember -Identity 'Security' -Members 'N.Darker', 'Carl.Young'
+# Adds user account to a group
+$User = 'John.Appleseed'
+$Group = 'Security'
+Add-ADGroupMember -Identity $Group -Members $User -PassThru
 
-# Returns all computers connected to a domain
-Get-AdComputer -Filter *
-
-# Returns all computers connected to a domain and only shows the computer name
+# Displays all computers connected to a domain
 Get-AdComputer -Filter * | Select-Object -Property Name
 
-# Returns all Windows 10 computers connected to a domain
-Get-ADComputer -Filter {OperatingSystem -Like '*Windows 10*'} -Property * | Select-Object Name, Operatingsystem
+# Displays all Windows 10 computers connected to a domain
+Get-ADComputer -Filter { OperatingSystem -Like '*Windows 10*' } -Property * | Select-Object Name, Operatingsystem
