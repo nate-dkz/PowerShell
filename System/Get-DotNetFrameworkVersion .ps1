@@ -2,7 +2,7 @@ function Get-DotNetFrameworkVersion {
     [CmdletBinding()]
     param (
         [parameter()]
-        [string] $RegistryKey = 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\'
+        [string]$RegistryKey = 'HKLM:\SOFTWARE\Microsoft\NET Framework Setup\NDP\'
     )
 
     # Get the version of the .NET Framework installed on the system

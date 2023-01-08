@@ -5,6 +5,6 @@ function Get-InstalledOSUpdates {
     )
 
     Get-CimInstance -ClassName win32_quickfixengineering -ComputerName $ComputerName | 
-    Select-Object -Property @{n='HostName' ; e={$_.CSName}}, HotFixID, Description, Caption, InstalledOn, InstalledBy |
+    Select-Object -Property @{n='HostName' ; e={$_.CSName}}, HotFixID, Description, Caption, InstalledOn |
     Sort-Object -Property InstalledOn -Descending
 }
