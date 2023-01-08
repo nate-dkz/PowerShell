@@ -1,43 +1,16 @@
-# Requires -version 5.1
 function Get-DirSize {
-    <#
+     <#
     .SYNOPSIS
-        Retrieves folder and file information for one or more specified locations.
+    Retrieves the size of a specified directory and its subdirectories.
+
     .DESCRIPTION
-        The Get-DirSize function retrieves folder and file information for one or more specified locations.
-        You can use the Recurse parameter to get items in all child containers.
-        
-        Get-DirSize does not return information from hidden folders. 
-    .NOTES
-        
-    .EXAMPLE 
-        Get-DirSize -Path C:\Users\Files
+    The Get-DirSize function searches the specified path for directories and retrieves the total number of subfolders, total number of files, and total size of the specified directory and its subdirectories. The size is returned in megabytes.
 
-        Folder                TotalSubFolders TotalFiles TotalSize(MB)
-        ------                --------------- ---------- -------------
-        C:\Users\Files              5             1            4
-    .EXAMPLE
-        'C:\Users\Files','C:\Users\OneDrive Dev\Documents\WindowsPowerShell' | Get-DirSize
+    .PARAMETER Path
+    The path to search for directories. This parameter is required.
 
-        Folder                                                            TotalSubFolders TotalFiles TotalSize(MB)
-        ------                                                            --------------- ---------- -------------
-        C:\Users\Files                                                          5           1             4
-        C:\Users\OneDrive - Dev\Documents\WindowsPowerShell                     11         30            255
-    .EXAMPLE
-        'C:\Users\Files','C:\Users\OneDrive Dev\Documents\WindowsPowerShell' | Get-DirSize -Recurse
-
-        Folder                                                            TotalSubFolders TotalFiles TotalSize(MB)
-        ------                                                            --------------- ---------- -------------
-        C:\Users\Files                                                          30            74           161
-        C:\Users\OneDrive - Dev\Documents\WindowsPowerShell                     82            385          755
-    .INPUTS
-        System.String
-            You can pipe a string that contains a path to Get-DirSize.
-
-    .OUTPUTS
-        System.PSCustomObject
-            Get-DirSize returns PSCustomObjects.
-
+    .PARAMETER Recurse
+    Specifies whether to search subdirectories recursively. By default, subdirectories are not searched recursively.
     #>
     [cmdletbinding()]
     param (
