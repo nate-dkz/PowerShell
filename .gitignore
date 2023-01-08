@@ -1,5 +1,8 @@
 # Ignore all files folders
-_Archive/
+_Local/
+_Test/
+_Work/
 
 # Ignore all file extension types
 *.txt
+New-NDADUser.ps1
